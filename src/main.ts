@@ -33,7 +33,7 @@ const entries: Entry[] = [
   },
   {
     id: "thinking-in-connections",
-    title: "Some thoughts need a conversation to bloom",
+    title: "Some thoughts come alive in conversation",
     description:
       "A little room for thinking out loud, following tangents, and finding the thread.",
     type: "Reflection",
@@ -57,8 +57,8 @@ const entries: Entry[] = [
     topics: ["life"],
     label: "AI & THE HUMAN SIDE",
     paragraphs: [
-      "I’m curious about what happens when tools can take care of more of the busywork around thinking. What do we choose to do with the space that opens up?",
-      "For me, the interesting possibility is more time for thoughtful questions and real conversations. A tool might help us organize context, but knowing what matters to another person still asks something of us.",
+      "I’m curious about how AI can help us see and support the different strengths people bring. What might become possible if more people found the collaborators who understood their particular kind of genius?",
+      "For me, the human layer is attention: understanding what matters to someone, what gives them energy, and what they want to contribute. Technology opens possibilities; a meaningful connection still asks us to see the person.",
       "This is a question I want to keep exploring, especially as AI becomes part of the everyday texture of work.",
     ],
     question: "Where could a tool free you to be more present?",
@@ -102,7 +102,7 @@ const entries: Entry[] = [
     paragraphs: [
       "I like questions that stay interesting after the first answer. The kind that send you into a conversation with someone who sees things differently.",
       "Learning and personal growth seem to ask for a similar thing: enough confidence to follow what interests you, and enough openness to discover that you missed something.",
-      "This little garden is a place for that. Ideas can take shape, change direction, and grow as I do.",
+      "This notebook is a place for that. Ideas can take shape, change direction, and grow as I do.",
     ],
     question: "What have you changed your mind about lately?",
   },
@@ -116,7 +116,7 @@ const searchInput = $<HTMLInputElement>("#search-input");
 let currentFilter = "all";
 const flower = '<span class="note-flower" aria-hidden="true">✳</span>';
 
-function renderGarden() {
+function renderNotebook() {
   const filtered = entries.filter(
     (entry) =>
       currentFilter === "all" || entry.topics.includes(currentFilter as Topic),
@@ -126,7 +126,7 @@ function renderGarden() {
   $("#cards").innerHTML = cards
     .map(
       (e) =>
-        `<a class="reflection-card" href="#${e.id}" data-entry="${e.id}"><div class="card-art"><img src="./art/${e.image}.svg" alt="" width="400" height="290"></div><div class="card-copy"><span class="card-label">${e.label}</span><h4>${e.title}</h4><p>${e.description}</p><div class="card-meta"><span><span class="seed-dot"></span> Seedling</span><span aria-hidden="true">↗</span></div></div></a>`,
+        `<a class="reflection-card" href="#${e.id}" data-entry="${e.id}"><div class="thought-art thought-${e.image}" aria-hidden="true"><i></i><b></b><span>${e.image === "connections" ? "↗" : "≈"}</span><small>${e.image === "connections" ? "A SHARED DIRECTION" : "THINKING, TOGETHER"}</small></div><div class="card-copy"><span class="card-label">${e.label}</span><h4>${e.title}</h4><p>${e.description}</p><div class="card-meta"><span><span class="seed-dot"></span> In progress</span><span aria-hidden="true">↗</span></div></div></a>`,
     )
     .join("");
   $("#notes-list").innerHTML = notes
@@ -144,7 +144,7 @@ function openEntry(id: string) {
   const entry = entries.find((e) => e.id === id);
   if (!entry) return;
   $("#reader-content").innerHTML =
-    `<p class="eyebrow">${entry.type} <span> / </span> ${entry.label}</p><h2 id="reader-title">${entry.title}</h2><p class="reader-deck">${entry.description}</p><div class="reader-meta"><span class="seed-dot"></span> A seedling · An idea in progress</div>${entry.paragraphs.map((p) => `<p>${p}</p>`).join("")}<blockquote>${entry.question}</blockquote><div class="reader-end">A thought from Alicia’s garden <span aria-hidden="true">✳</span></div>`;
+    `<p class="eyebrow">${entry.type} <span> / </span> ${entry.label}</p><h2 id="reader-title">${entry.title}</h2><p class="reader-deck">${entry.description}</p><div class="reader-meta"><span class="seed-dot"></span> An open thought · Still taking shape</div>${entry.paragraphs.map((p) => `<p>${p}</p>`).join("")}<blockquote>${entry.question}</blockquote><div class="reader-end">A thought from Alicia’s notebook <span aria-hidden="true">✳</span></div>`;
   if (searchDialog.open) searchDialog.close();
   if (!reader.open) reader.showModal();
 }
@@ -166,22 +166,22 @@ document.querySelectorAll<HTMLButtonElement>(".filter").forEach((button) =>
       b.classList.toggle("active", b === button);
       b.setAttribute("aria-pressed", String(b === button));
     });
-    renderGarden();
+    renderNotebook();
   }),
 );
 
 function updateThemeLabel() {
   $("#theme-toggle").setAttribute(
     "aria-label",
-    `Switch to ${document.documentElement.dataset.theme === "light" ? "dark" : "light"} theme`,
+    `Switch to ${document.documentElement.dataset.theme === "dark" ? "light" : "dark"} theme`,
   );
 }
 $("#theme-toggle").addEventListener("click", () => {
   const theme =
-    document.documentElement.dataset.theme === "light" ? "dark" : "light";
+    document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   document.documentElement.dataset.theme = theme;
   try {
-    localStorage.setItem("alicia-theme", theme);
+    localStorage.setItem("alicia-hub-theme", theme);
   } catch {
     /* Theme still works without storage. */
   }
@@ -207,7 +207,7 @@ function renderSearch() {
               `<a class="search-result" href="#${e.id}" data-entry="${e.id}"><span class="card-label">${e.type}</span><h3>${e.title}</h3><span aria-hidden="true">↗</span></a>`,
           )
           .join("")
-      : '<p class="search-empty">Nothing growing under that name yet. Try “people”, “AI”, or “learning”.</p>');
+      : '<p class="search-empty">No thoughts on that just yet. Try “people”, “AI”, or “learning”.</p>');
 }
 $("#search-open").addEventListener("click", () => {
   searchInput.value = "";
@@ -235,15 +235,50 @@ document.querySelectorAll<HTMLDialogElement>("dialog").forEach((dialog) => {
   });
   dialog.addEventListener("close", () => {
     if (dialog === reader && entries.some((e) => `#${e.id}` === location.hash))
-      history.replaceState(null, "", "#garden");
+      history.replaceState(null, "", "#notebook");
   });
 });
 
 $("#colophon-open").addEventListener("click", () => {
   $("#reader-content").innerHTML =
-    '<p class="eyebrow">ABOUT THIS LITTLE PLACE</p><h2 id="reader-title">The colophon</h2><p>A personal garden for Alicia Lin. Built with an appreciation for the slower, more thoughtful corners of the web.</p><p>The editorial layout, generous typography, and digital-garden spirit are inspired by <a href="https://maggieappleton.com/">Maggie Appleton’s website</a>. The writing and botanical illustrations were created for this site with AI assistance and are starting points for Alicia’s own evolving notebook.</p><p>Set in Fraunces and Lato, with original SVG illustrations, a little TypeScript, and Vite. No analytics, tracking cookies, or account required. Your theme preference stays in your browser.</p><div class="reader-end">Built to keep growing <span aria-hidden="true">✳</span></div>';
+    '<p class="eyebrow">BEHIND THIS LITTLE CORNER</p><h2 id="reader-title">The colophon.</h2><p>A personal home for Alicia Lin: a connector of people, ideas, and possibilities.</p><p>This original design draws on <a href="https://www.hume.ai/">Hume’s luminous visual language</a>, <a href="https://www.cosmos.so/">Cosmos’s spaciousness</a>, and <a href="https://www.are.na/">Are.na’s thoughtful community spirit</a>. The network is an interactive expression of Alicia’s approach to connection.</p><p>Set in Bricolage Grotesque, Newsreader, and DM Sans. Built with TypeScript and Vite, with original CSS and SVG graphics. The proposed writing and visual design were created with AI assistance.</p><p>No analytics or account required. Your theme preference stays in your browser.</p><div class="reader-end">People first. Possibility always. <span aria-hidden="true">↗</span></div>';
   reader.showModal();
 });
+
+const lenses: Record<string, { text: string; symbol: string }> = {
+  genius: {
+    text: "Everyone has a particular kind of brilliance.<br>I’m curious about what makes yours come alive.",
+    symbol: "✳",
+  },
+  purpose: {
+    text: "The right people share more than an interest.<br>They care about where they’re going together.",
+    symbol: "◎",
+  },
+  energy: {
+    text: "Some conversations give you energy.<br>I pay attention to that feeling of possibility.",
+    symbol: "≈",
+  },
+  possibility: {
+    text: "Different strengths. A shared direction.<br>That’s where something new can begin.",
+    symbol: "↗",
+  },
+};
+document
+  .querySelectorAll<HTMLButtonElement>("[data-lens]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      const lens = button.dataset.lens!;
+      document
+        .querySelectorAll<HTMLButtonElement>("[data-lens]")
+        .forEach((node) => {
+          node.classList.toggle("active", node === button);
+          node.setAttribute("aria-pressed", String(node === button));
+        });
+      $(".network-stage").dataset.active = lens;
+      $("#network-insight").innerHTML = lenses[lens].text;
+      $(".insight-symbol").textContent = lenses[lens].symbol;
+    });
+  });
 
 window.addEventListener("popstate", () => {
   const id = location.hash.slice(1);
@@ -251,7 +286,7 @@ window.addEventListener("popstate", () => {
   else if (reader.open) reader.close();
 });
 $("#year").textContent = String(new Date().getFullYear());
-renderGarden();
+renderNotebook();
 updateThemeLabel();
 if (entries.some((e) => e.id === location.hash.slice(1)))
   openEntry(location.hash.slice(1));

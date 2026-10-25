@@ -1,14 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#1c1d19" />
+  <defs>
+    <radialGradient id="orb" cx=".3" cy=".2">
+      <stop stop-color="#f9d8c7" />
+      <stop offset="1" stop-color="#bd5f44" />
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#f5f3ee" />
+  <circle cx="32" cy="32" r="25" fill="url(#orb)" />
   <text
-    x="12"
-    y="47"
-    fill="#eda6ba"
+    x="20"
+    y="44"
     font-family="Georgia,serif"
     font-style="italic"
-    font-size="46"
+    font-size="40"
+    fill="#592f24"
   >
     a
   </text>
-  <path d="M43 33c-3-13 10-18 10-18s5 14-10 18" fill="#81b5aa" />
 </svg>
