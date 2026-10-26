@@ -33,3 +33,9 @@ The introductory writing is proposed site copy, with notes labeled as ideas in p
 ## Design references
 
 The revised direction was informed by live inspection of [Hume](https://www.hume.ai/) for luminous network imagery, [Cosmos](https://www.cosmos.so/) for spacious typography, and [Are.na](https://www.are.na/) for thoughtful community-centered presentation. All site graphics and layouts are original. New Computer was inspected as well, but currently shows a wind-down notice and was not used as the visual direction.
+
+## People graph
+
+`src/people-graph.ts` contains eight explicitly fictional example people and sixteen possible introductions. The graph, badge counts, highlighted lines, and explanatory lists all derive from the same edge data. The public UI labels this as an illustrative network; these are not real contacts, live matchmaking, or verified opportunities. The user chose example people for now.
+
+To use approved public names later, edit `people` and `introductions` together. Each person needs a unique id; every edge must reference two different existing ids, and each pair should appear once. Counts update automatically. Do not publish a private contact list as the graph dataset.

@@ -1,4 +1,5 @@
 import "./style.css";
+import "./people-graph";
 
 type Topic = "connections" | "startups" | "life";
 type Entry = {

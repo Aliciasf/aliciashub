@@ -2276,3 +2276,789 @@ blockquote {
 :root[data-theme="dark"] .visual-alignment b {
   mix-blend-mode: normal;
 }
+
+/* A transparent, fictional people graph: all counts come from explicit example edges. */
+.people-section .section-heading {
+  margin-bottom: 27px;
+}
+.people-demo-notice {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.demo-badge {
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  padding: 6px 9px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.people-demo-notice p {
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.people-explorer {
+  display: grid;
+  grid-template-columns: minmax(0, 2.25fr) minmax(260px, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--surface-raised);
+}
+.people-map-column {
+  min-width: 0;
+}
+.people-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px 23px;
+  border-bottom: 1px solid var(--line);
+  font-size: 9px;
+  color: var(--muted);
+}
+.people-toolbar button {
+  padding: 4px 0;
+  background: none;
+  color: var(--accent);
+  font-size: 9px;
+  white-space: nowrap;
+}
+.people-toolbar button span {
+  margin-left: 7px;
+}
+.people-toolbar button:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.people-map {
+  position: relative;
+  aspect-ratio: 800/620;
+  isolation: isolate;
+  background-image: radial-gradient(var(--line) 0.6px, transparent 0.6px);
+  background-size: 18px 18px;
+}
+#people-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.hub-spoke {
+  stroke: var(--teal);
+  stroke-width: 0.9;
+  stroke-dasharray: 2 5;
+  opacity: 0.24;
+  vector-effect: non-scaling-stroke;
+}
+.intro-edge {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 0.9;
+  opacity: 0.22;
+  vector-effect: non-scaling-stroke;
+  transition:
+    opacity 0.25s,
+    stroke 0.25s;
+}
+.people-map.has-selection .intro-edge {
+  opacity: 0.045;
+}
+.people-map .intro-edge.is-active {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.85;
+}
+.people-map.has-selection .hub-spoke {
+  opacity: 0.1;
+}
+.people-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: radial-gradient(
+    circle at 28% 23%,
+    #ffe5d1,
+    #dfa98a 35%,
+    #c28367 68%,
+    #9e604a
+  );
+  box-shadow:
+    0 0 0 10px #c8a68b0a,
+    0 0 0 25px #c8a68b05;
+  color: #5e3a2b;
+}
+.people-hub > span {
+  font: 400 clamp(23px, 2.7vw, 39px) var(--display);
+  letter-spacing: -2px;
+}
+.people-hub > span > span {
+  font-size: 11px;
+  vertical-align: top;
+  display: inline-block;
+  margin-top: 4px;
+  margin-left: 2px;
+}
+.people-hub small {
+  font-size: 5px;
+  letter-spacing: 1.2px;
+  margin-top: 4px;
+}
+.person-node {
+  position: absolute;
+  left: var(--node-x);
+  top: var(--node-y);
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: 0;
+  padding: 5px;
+  width: 132px;
+  z-index: 2;
+  transition: opacity 0.25s;
+}
+.person-avatar {
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 51px;
+  height: 51px;
+  background: var(--avatar-bg);
+  border: 1px solid var(--avatar-line);
+  border-radius: 50%;
+  font: 500 15px var(--display);
+  letter-spacing: -0.5px;
+  color: var(--avatar-text);
+  box-shadow: 0 0 0 5px var(--surface-raised);
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+.tone-copper {
+  --avatar-bg: #edddd1;
+  --avatar-line: #d6b8a0;
+  --avatar-text: #88523a;
+}
+.tone-sage {
+  --avatar-bg: #dfe8df;
+  --avatar-line: #b4cab9;
+  --avatar-text: #4f6f59;
+}
+.tone-blue {
+  --avatar-bg: #dfe6e8;
+  --avatar-line: #bcccd0;
+  --avatar-text: #4f6c79;
+}
+.tone-gold {
+  --avatar-bg: #ece5d3;
+  --avatar-line: #d3c3a2;
+  --avatar-text: #7b6747;
+}
+.person-count {
+  position: absolute;
+  right: -5px;
+  top: -3px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-raised);
+  border: 1px solid var(--avatar-line);
+  font: 500 9px var(--sans);
+  color: var(--avatar-text);
+}
+.person-name {
+  display: block;
+  font: 500 11px var(--sans);
+  margin-top: 10px;
+  white-space: nowrap;
+  color: var(--text);
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: var(--surface-raised);
+}
+.person-role {
+  display: block;
+  font-size: 8px;
+  color: var(--muted);
+  margin-top: 2px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: var(--surface-raised);
+  white-space: nowrap;
+}
+.person-node:hover .person-avatar,
+.person-node.is-selected .person-avatar {
+  transform: scale(1.07);
+  box-shadow:
+    0 0 0 5px var(--surface-raised),
+    0 0 0 6px var(--accent);
+}
+.person-node.is-selected .person-count {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.person-node.is-selected .person-name {
+  color: var(--accent);
+}
+.person-node.is-related .person-avatar {
+  box-shadow:
+    0 0 0 5px var(--surface-raised),
+    0 0 0 6px var(--avatar-line);
+}
+.person-node.is-unrelated .person-avatar {
+  opacity: 0.65;
+}
+.person-node.is-unrelated:hover,
+.person-node.is-unrelated:focus-visible {
+  opacity: 1;
+}
+.people-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 19px;
+  padding: 17px 23px;
+  border-top: 1px solid var(--line);
+  font-size: 7px;
+  color: var(--muted);
+}
+.people-legend > span:last-child {
+  margin-left: auto;
+}
+.people-legend i {
+  display: inline-block;
+  width: 14px;
+  border-top: 1px solid var(--accent);
+  margin-right: 6px;
+  vertical-align: 2px;
+}
+.people-legend > span:nth-child(2) i {
+  border-top: 1px dashed var(--teal);
+}
+.people-detail {
+  border-left: 1px solid var(--line);
+  padding: 29px 24px;
+  background: var(--bg);
+  min-width: 0;
+  max-height: 680px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.people-detail .eyebrow {
+  font-size: 7px;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+.people-detail h3 {
+  font: 400 28px/1.15 var(--display);
+  letter-spacing: -1px;
+}
+.people-detail-intro {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 19px;
+  color: var(--muted);
+}
+.people-overview {
+  display: flex;
+  gap: 32px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 23px 0;
+  margin: 26px 0;
+}
+.people-overview strong {
+  font: 400 35px var(--display);
+  letter-spacing: -1px;
+  display: block;
+  color: var(--accent);
+}
+.people-overview span {
+  font-size: 8px;
+  color: var(--muted);
+  line-height: 1.7;
+  display: block;
+  margin-top: 5px;
+}
+.people-pick-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+.people-pick-hint > span {
+  font-size: 27px;
+  color: var(--accent);
+}
+.people-pick-hint p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.people-panel-footnote {
+  font-size: 9px;
+  line-height: 1.8;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+  margin-top: 25px;
+}
+.selected-person-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.detail-avatar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--avatar-bg);
+  border: 1px solid var(--avatar-line);
+  color: var(--avatar-text);
+  display: grid;
+  place-items: center;
+  font: 500 15px var(--display);
+}
+.selected-person-heading h3 {
+  font-size: 24px;
+  letter-spacing: -0.8px;
+}
+.selected-person-heading p {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.person-interest {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 21px 0;
+}
+.intro-list-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.intro-list-heading strong {
+  font: 400 35px var(--display);
+  letter-spacing: -1px;
+  color: var(--accent);
+}
+.intro-list-heading > span {
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.introduction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.introduction-list li {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+.introduction-list li:last-child {
+  border-bottom: 0;
+}
+.introduction-list button {
+  padding: 0;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  gap: 15px;
+}
+.introduction-list button strong {
+  font: 500 12px var(--sans);
+  display: block;
+}
+.introduction-list button small {
+  font-size: 8px;
+  color: var(--muted);
+  display: block;
+  margin-top: 4px;
+}
+.introduction-list button > span:last-child {
+  font-size: 17px;
+  color: var(--accent);
+}
+.introduction-list button:hover strong {
+  color: var(--accent);
+}
+.introduction-list li > p {
+  font-size: 10px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-top: 9px;
+}
+:root[data-theme="dark"] .tone-copper {
+  --avatar-bg: #49392e;
+  --avatar-line: #795e49;
+  --avatar-text: #ebc1a3;
+}
+:root[data-theme="dark"] .tone-sage {
+  --avatar-bg: #304438;
+  --avatar-line: #536e5b;
+  --avatar-text: #bad3bb;
+}
+:root[data-theme="dark"] .tone-blue {
+  --avatar-bg: #303f45;
+  --avatar-line: #506a76;
+  --avatar-text: #b6d0db;
+}
+:root[data-theme="dark"] .tone-gold {
+  --avatar-bg: #484031;
+  --avatar-line: #79694b;
+  --avatar-text: #ddcba4;
+}
+@media (max-width: 1050px) {
+  .people-explorer {
+    grid-template-columns: minmax(0, 1.9fr) minmax(245px, 1fr);
+  }
+  .people-toolbar {
+    padding: 16px;
+    font-size: 8px;
+    gap: 9px;
+  }
+  .people-toolbar button {
+    font-size: 8px;
+  }
+  .person-node {
+    width: 110px;
+  }
+  .person-avatar {
+    width: 43px;
+    height: 43px;
+    font-size: 13px;
+  }
+  .person-name {
+    font-size: 10px;
+    margin-top: 8px;
+  }
+  .person-role {
+    font-size: 7px;
+  }
+  .person-count {
+    width: 18px;
+    height: 18px;
+    font-size: 8px;
+  }
+  .people-detail {
+    padding: 24px 20px;
+    max-height: 600px;
+  }
+  .people-detail h3 {
+    font-size: 25px;
+  }
+  .people-legend {
+    padding: 15px 16px;
+  }
+  .people-legend > span:last-child {
+    margin-left: 0;
+    width: 100%;
+  }
+  .selected-person-heading {
+    gap: 10px;
+  }
+  .selected-person-heading h3 {
+    font-size: 21px;
+  }
+  .detail-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 760px) {
+  .people-demo-notice {
+    display: block;
+  }
+  .people-demo-notice p {
+    margin-top: 11px;
+    font-size: 10px;
+  }
+  .people-explorer {
+    grid-template-columns: 1fr;
+  }
+  .people-map {
+    aspect-ratio: 800/650;
+  }
+  .people-toolbar {
+    padding: 18px 22px;
+    font-size: 9px;
+  }
+  .people-toolbar button {
+    font-size: 9px;
+  }
+  .person-avatar {
+    width: 49px;
+    height: 49px;
+    font-size: 14px;
+  }
+  .person-name {
+    font-size: 11px;
+    margin-top: 9px;
+  }
+  .person-role {
+    font-size: 8px;
+  }
+  .person-count {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+  .person-node {
+    width: 125px;
+  }
+  .people-hub > span {
+    font-size: 36px;
+  }
+  .people-hub small {
+    font-size: 5px;
+  }
+  .people-detail {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    max-height: none;
+    padding: 28px;
+  }
+  .people-detail .eyebrow {
+    margin-bottom: 20px;
+  }
+  .people-detail h3 {
+    font-size: 28px;
+  }
+  .people-detail-intro {
+    max-width: 380px;
+  }
+  .people-overview {
+    gap: 45px;
+    max-width: 380px;
+  }
+  .people-pick-hint p {
+    max-width: 350px;
+  }
+  .people-panel-footnote {
+    font-size: 10px;
+  }
+  .people-legend {
+    padding: 16px 22px;
+  }
+  .people-legend > span:last-child {
+    margin-left: auto;
+    width: auto;
+  }
+  .selected-person-heading h3 {
+    font-size: 26px;
+  }
+  .detail-avatar {
+    width: 47px;
+    height: 47px;
+  }
+  .person-interest {
+    font-size: 13px;
+    max-width: 400px;
+  }
+  .introduction-list button strong {
+    font-size: 14px;
+  }
+  .introduction-list button small {
+    font-size: 10px;
+  }
+  .introduction-list li > p {
+    font-size: 12px;
+  }
+  .intro-list-heading > span {
+    font-size: 11px;
+  }
+  .introduction-list li {
+    padding: 18px 0;
+  }
+}
+@media (max-width: 480px) {
+  .people-section h2 {
+    font-size: 32px;
+  }
+  .people-demo-notice {
+    margin-bottom: 20px;
+  }
+  .demo-badge {
+    font-size: 6px;
+    letter-spacing: 0.8px;
+  }
+  .people-demo-notice p {
+    font-size: 9px;
+    line-height: 1.8;
+  }
+  .people-toolbar {
+    padding: 14px 14px;
+    align-items: flex-start;
+    font-size: 7px;
+    gap: 13px;
+  }
+  .people-toolbar > span {
+    max-width: 130px;
+    line-height: 1.8;
+  }
+  .people-toolbar button {
+    font-size: 8px;
+    line-height: 1.8;
+    padding: 0;
+  }
+  .people-toolbar button span {
+    margin-left: 4px;
+  }
+  .people-map {
+    aspect-ratio: auto;
+    height: 330px;
+  }
+  .person-node {
+    width: 86px;
+    padding: 4px;
+  }
+  .person-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 10px;
+    box-shadow: 0 0 0 3px var(--surface-raised);
+  }
+  .person-name {
+    font-size: 8px;
+    margin-top: 7px;
+    padding: 2px 3px;
+  }
+  .person-role {
+    font-size: 6px;
+    margin-top: 1px;
+    padding: 1px 2px;
+  }
+  .person-count {
+    width: 16px;
+    height: 16px;
+    font-size: 7px;
+    right: -5px;
+    top: -4px;
+  }
+  .people-hub {
+    width: 21%;
+  }
+  .people-hub > span {
+    font-size: 25px;
+    letter-spacing: -1.7px;
+  }
+  .people-hub > span > span {
+    font-size: 8px;
+    margin-top: 3px;
+  }
+  .people-hub small {
+    font-size: 3.5px;
+    letter-spacing: 0.65px;
+  }
+  .people-legend {
+    padding: 14px;
+    gap: 11px 17px;
+    font-size: 7px;
+  }
+  .people-legend > span:last-child {
+    width: 100%;
+    margin: 0;
+  }
+  .people-detail {
+    padding: 25px 22px;
+  }
+  .people-detail .eyebrow {
+    font-size: 6px;
+  }
+  .people-detail h3 {
+    font-size: 26px;
+  }
+  .people-detail-intro {
+    font-size: 13px;
+  }
+  .people-overview {
+    margin: 23px 0;
+    padding: 20px 0;
+  }
+  .people-overview span {
+    font-size: 9px;
+  }
+  .people-pick-hint p {
+    font-size: 12px;
+  }
+  .people-panel-footnote {
+    font-size: 9px;
+  }
+  .people-hub {
+    box-shadow:
+      0 0 0 7px #c8a68b0a,
+      0 0 0 15px #c8a68b05;
+  }
+  .person-node:hover .person-avatar,
+  .person-node.is-selected .person-avatar {
+    box-shadow:
+      0 0 0 3px var(--surface-raised),
+      0 0 0 4px var(--accent);
+  }
+  .person-node.is-related .person-avatar {
+    box-shadow:
+      0 0 0 3px var(--surface-raised),
+      0 0 0 4px var(--avatar-line);
+  }
+}
+@media (max-width: 355px) {
+  .people-map {
+    height: 310px;
+  }
+  .person-node {
+    width: 74px;
+  }
+  .person-name {
+    font-size: 7px;
+  }
+  .person-role {
+    font-size: 5.5px;
+  }
+  .person-avatar {
+    width: 31px;
+    height: 31px;
+    font-size: 9px;
+  }
+  .people-hub > span {
+    font-size: 21px;
+  }
+  .people-hub small {
+    font-size: 3px;
+  }
+  .people-toolbar {
+    font-size: 6.5px;
+  }
+  .people-toolbar button {
+    font-size: 7px;
+  }
+}

@@ -36,7 +36,7 @@
       >
       <nav aria-label="Main navigation">
         <a href="#human-layer">The human layer</a
-        ><a href="#approach">My approach</a><a href="#notebook">Notebook</a
+        ><a href="#people-graph">People graph</a><a href="#notebook">Notebook</a
         ><a href="#about">About</a
         ><span class="nav-divider" aria-hidden="true"></span
         ><button
@@ -74,8 +74,8 @@
             them up.<br />And who they could build something with.
           </p>
           <div class="hero-actions">
-            <a class="button-primary" href="#human-layer"
-              >Meet your connector <span aria-hidden="true">↗</span></a
+            <a class="button-primary" href="#people-graph"
+              >Explore the people graph <span aria-hidden="true">↗</span></a
             ><a class="button-text" href="#notebook"
               >Follow my curiosity <span aria-hidden="true">↓</span></a
             >
@@ -202,6 +202,67 @@
         </div>
         <span class="strip-end" aria-hidden="true">↗</span>
       </div>
+      <section
+        class="people-section section"
+        id="people-graph"
+        aria-labelledby="people-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">THE CONNECTOR EFFECT</p>
+            <h2 id="people-title">
+              One person.<br />A world of <em>connections.</em>
+            </h2>
+          </div>
+          <p>
+            Every person brings their own spark.<br />Explore the introductions
+            that could<br />turn shared interests into something new.
+          </p>
+        </div>
+        <div class="people-demo-notice">
+          <span class="demo-badge">ILLUSTRATIVE NETWORK</span>
+          <p>
+            These are fictional example people and possible introductions, not
+            Alicia’s real contacts or verified opportunities.
+          </p>
+        </div>
+        <div class="people-explorer">
+          <div class="people-map-column">
+            <div class="people-toolbar">
+              <span id="people-summary"></span
+              ><button id="people-reset" type="button">
+                Show all connections <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <div
+              class="people-map"
+              id="people-map"
+              role="group"
+              aria-label="Example people graph. Choose a person to explore their possible introductions."
+            >
+              <svg
+                id="people-lines"
+                viewBox="0 0 800 620"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              ></svg>
+              <div class="people-hub" aria-hidden="true">
+                <span>alicia<span>✳</span></span
+                ><small>THE CONNECTOR</small>
+              </div>
+              <div id="people-nodes"></div>
+            </div>
+            <div class="people-legend">
+              <span><i></i> A possible introduction</span
+              ><span><i></i> Connected through Alicia</span
+              ><span>Select a name to follow the thread ↗</span>
+            </div>
+          </div>
+          <aside class="people-detail" aria-labelledby="people-detail-title">
+            <div id="people-detail-content" aria-live="polite"></div>
+          </aside>
+        </div>
+      </section>
       <section
         class="human-layer section"
         id="human-layer"
